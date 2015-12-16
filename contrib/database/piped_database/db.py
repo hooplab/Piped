@@ -119,6 +119,9 @@ class EngineManager(piped_service.PipedService):
         self._fail_if_configuration_is_invalid()
         self.engine_configuration.setdefault('proxy', self.proxy_factory(self))
 
+        if 'poolclass' in self.engine_configuration:
+            self.engine_configuration['poolclass'] = reflect.namedAny(self.engine_configuration['poolclass'])
+
         self.is_connected = False
 
         self.engine = sa.engine_from_config(self.engine_configuration, prefix='')
